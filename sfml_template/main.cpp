@@ -32,6 +32,12 @@ int main()
     gui.loadWidgetsFromFile("form.txt");
     gui.onViewChange(&resize);
 
+    Panel::Ptr wordsbox = gui.get<Panel>("wordsbox");
+    wordsbox->getRenderer()->setBorderColor(tgui::Color("#264d6e"));
+    
+    Panel::Ptr metricPanel = gui.get<Panel>("metricPanel");
+    metricPanel->getRenderer()->setBorderColor(tgui::Color("#264d6e"));
+
     reset();
 
     BitmapButton::Ptr refreshBtn = gui.get<BitmapButton>("refreshBtn");
@@ -106,22 +112,22 @@ void resize()
     Panel::Ptr wordsbox = gui.get<Panel>("wordsbox");
 
     vector<Widget::Ptr> widgets = wordsbox->getWidgets();
-    int left = 10;
-    int top = 10;
+    int left = 0;
+    int top = 0;
     
     for (int i = 0; i < wordCount; i++)
     {
-        widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 40);
+        widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 50);
     }
     
     for (int i = wordCount; i < widgets.size(); i++)
     {
         int x = widgets[i]->getSize().x;
 
-        if (left + x >= wordsbox->getSize().x)
+        if (left + x >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
         {
-            top += 40;
-            left = 10;
+            top += 50;
+            left = 0;
         }
 
         widgets[i]->setPosition(left, top);
@@ -148,27 +154,28 @@ void reset()
 
         random_shuffle(words.begin(), words.end(), myrandom);
 
-        int left = 10;
-        int top = 10;
+        int left = 0;
+        int top = 0;
         for (int i = 0; i < words.size(); i++)
         {
             Label::Ptr word = Label::create(words[i]);
-            word->setTextSize(24);
+            word->setTextSize(30);
+            word->getRenderer()->setTextColor(tgui::Color::White);
             wordsbox->add(word);
 
             int x = word->getSize().x;
 
-            if (left + x >= wordsbox->getSize().x)
+            if (left + x >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
             {
-                top += 40;
-                left = 10;
+                top += 50;
+                left = 0;
             }
 
             word->setPosition(left, top);
 
             left += x + 2;
         }
-        wordsbox->getWidgets()[0]->cast<Label>()->getRenderer()->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::Black, 0.5));
+        wordsbox->getWidgets()[0]->cast<Label>()->getRenderer()->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::White, 0.25));
         fin.close();
     }
 
@@ -210,8 +217,8 @@ void process()
             Label::Ptr nextLabel = widgets[wordCount + 1]->cast<Label>();
             LabelRenderer* nextLabelRenderer = nextLabel->getRenderer();
 
-            currLabelRenderer->setBackgroundColor(tgui::Color::White);
-            nextLabelRenderer->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::Black, 0.5));
+            currLabelRenderer->setBackgroundColor(tgui::Color::Transparent);
+            nextLabelRenderer->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::White, 0.25));
             if (text == currLabel->getText() + " ")
             {
                 currLabelRenderer->setTextColor(tgui::Color::Green);
@@ -227,11 +234,11 @@ void process()
 
             wordCount++;
 
-            if (nextLabel->getPosition().y > 10)
+            if (nextLabel->getPosition().y > 0)
             {
                 for (int i = 0; i < widgets.size(); i++)
                 {
-                    widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 40);
+                    widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 50);
                 }
             }
         }
@@ -242,7 +249,7 @@ void process()
         charCount++;
         if (text == currLabel->getText().substr(0, text.size()))
         {
-            currLabelRenderer->setTextColor(tgui::Color::Black);
+            currLabelRenderer->setTextColor(tgui::Color::White);
         }
         else
         {
