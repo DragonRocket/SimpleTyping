@@ -1,6 +1,22 @@
 Renderer.1 {
 }
 
+Renderer.2 {
+    TextColor = rgb(190, 190, 190);
+    TextureBackground = None;
+
+    Scrollbar {
+        TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
+        TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
+        TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
+        TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
+        TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
+        TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
+        TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
+        TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
+    }
+}
+
 Panel.mainPanel {
     Size = (100%, 100%);
 
@@ -11,7 +27,7 @@ Panel.mainPanel {
 
     Panel.wordsbox {
         Position = (5%, 30);
-        Size = (90%, 110);
+        Size = (90%, 130);
 
         Renderer {
             BackgroundColor = #131516;
@@ -21,9 +37,9 @@ Panel.mainPanel {
         }
     }
 
-    Panel.Panel1 {
-        Position = (5%, 150);
-        Size = (90%, 62);
+    Panel.inputPanel {
+        Position = (5%, 170);
+        Size = (90%, 72);
 
         Renderer {
             BackgroundColor = #193C5D;
@@ -32,9 +48,9 @@ Panel.mainPanel {
         }
 
         EditBox.typebox {
-            Position = (25% - 58, 5);
-            Size = (50%, 52);
-            TextSize = 30;
+            Position = (25% - 78, 5);
+            Size = (50%, 62);
+            TextSize = 32;
 
             Renderer {
                 BackgroundColor = #131516;
@@ -44,10 +60,11 @@ Panel.mainPanel {
                 BorderColorDisabled = #7D7D7D;
                 BorderColorHover = black;
                 Borders = (1, 1, 1, 1);
-                CaretColor = black;
+                CaretColor = white;
                 CaretWidth = 1;
                 DefaultTextColor = #A0A0A0;
-                Padding = (0, 0, 0, 0);
+                DefaultTextStyle = Regular;
+                Padding = (10, 10, 10, 10);
                 SelectedTextBackgroundColor = #006EFF;
                 SelectedTextColor = white;
                 TextColor = white;
@@ -61,13 +78,14 @@ Panel.mainPanel {
 
         Label.time {
             HorizontalAlignment = Center;
-            Position = ((25% - 58) + 50%, 5);
-            Size = (64, 52);
+            Position = (((25% - 78) + 50%) + 10, 5);
+            Size = (74, 62);
             Text = 60;
-            TextSize = 20;
+            TextSize = 24;
             VerticalAlignment = Center;
 
             Renderer {
+                BackgroundColor = #303E4A;
                 TextColor = white;
                 TextureBackground = None;
 
@@ -85,10 +103,10 @@ Panel.mainPanel {
         }
 
         BitmapButton.refreshBtn {
-            Image = "D:/Development/Visual Studio Projects/Typing/elib/TGUI/gui-builder/refresh.jpg" Smooth;
-            ImageScaling = 0.6;
-            Position = (((25% - 58) + 50%) + 64, 5);
-            Size = (52, 52);
+            Image = "refresh.jpg" Smooth;
+            ImageScaling = 0.4;
+            Position = (((((25% - 78) + 50%) + 10) + 74) + 10, 5);
+            Size = (62, 62);
             TextSize = 13;
 
             Renderer {
@@ -118,7 +136,7 @@ Panel.mainPanel {
     }
 
     Panel.metricPanel {
-        Position = (5%, 260);
+        Position = (5%, 290);
         Size = (250, 210);
 
         Renderer {
@@ -135,49 +153,19 @@ Panel.mainPanel {
 
             Label.speedlabel {
                 AutoSize = true;
+                Renderer = &2;
                 Size = (88.2, 29);
                 Text = "Speed: ";
                 TextSize = 22;
-
-                Renderer {
-                    TextColor = rgb(190, 190, 190);
-                    TextureBackground = None;
-
-                    Scrollbar {
-                        TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
-                        TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
-                        TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
-                        TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
-                    }
-                }
             }
 
             Label.speed {
                 Position = (90, 0);
+                Renderer = &2;
                 Size = (102.8, 29);
                 Text = "0 WPM";
                 TextSize = 20;
                 VerticalAlignment = Center;
-
-                Renderer {
-                    TextColor = rgb(190, 190, 190);
-                    TextureBackground = None;
-
-                    Scrollbar {
-                        TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
-                        TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
-                        TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
-                        TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
-                    }
-                }
             }
         }
 
@@ -189,49 +177,19 @@ Panel.mainPanel {
             Label.errorlabel {
                 AutoSize = true;
                 Position = (0, -4.5);
+                Renderer = &2;
                 Size = (88.2, 29);
                 Text = "Errors: ";
                 TextSize = 22;
-
-                Renderer {
-                    TextColor = rgb(190, 190, 190);
-                    TextureBackground = None;
-
-                    Scrollbar {
-                        TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
-                        TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
-                        TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
-                        TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
-                    }
-                }
             }
 
             Label.errors {
                 Position = (90, -4.5);
+                Renderer = &2;
                 Size = (47.8, 29);
                 Text = 0;
                 TextSize = 20;
                 VerticalAlignment = Center;
-
-                Renderer {
-                    TextColor = rgb(190, 190, 190);
-                    TextureBackground = None;
-
-                    Scrollbar {
-                        TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
-                        TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
-                        TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
-                        TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
-                    }
-                }
             }
         }
 
@@ -243,75 +201,41 @@ Panel.mainPanel {
             Label.accuracylabel {
                 AutoSize = true;
                 Position = (0, -4.5);
+                Renderer = &2;
                 Size = (120.2, 29);
                 Text = "Accuracy: ";
                 TextSize = 22;
-
-                Renderer {
-                    TextColor = rgb(190, 190, 190);
-                    TextureBackground = None;
-
-                    Scrollbar {
-                        TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
-                        TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
-                        TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
-                        TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
-                    }
-                }
             }
 
             Label.accuracy {
                 Position = (116.1, -4.5);
+                Renderer = &2;
                 Size = (87.8, 29);
                 Text = "0 %";
                 TextSize = 20;
                 VerticalAlignment = Center;
-
-                Renderer {
-                    TextColor = rgb(190, 190, 190);
-                    TextureBackground = None;
-
-                    Scrollbar {
-                        TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                        TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                        TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
-                        TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
-                        TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
-                        TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
-                    }
-                }
             }
         }
 
-        Label.Label1 {
+        Label.metriclabel {
             HorizontalAlignment = Center;
             Position = (10, 10);
+            Renderer = &2;
             Size = (227.2, 38);
             Text = Metrics;
             TextSize = 24;
             VerticalAlignment = Center;
+        }
+    }
 
-            Renderer {
-                TextColor = rgb(190, 190, 190);
-                TextureBackground = None;
+    Picture.loading {
+        Position = (50% - 50, 60);
+        Size = (150, 150);
+        Visible = false;
 
-                Scrollbar {
-                    TextureArrowDown = "themes/Black.png" Part(0, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                    TextureArrowDownHover = "themes/Black.png" Part(22, 0, 20, 20) Middle(0, 1, 20, 19) Smooth;
-                    TextureArrowUp = "themes/Black.png" Part(44, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                    TextureArrowUpHover = "themes/Black.png" Part(66, 0, 20, 20) Middle(0, 0, 20, 19) Smooth;
-                    TextureThumb = "themes/Black.png" Part(68, 465, 20, 20) Smooth;
-                    TextureThumbHover = "themes/Black.png" Part(90, 465, 20, 20) Smooth;
-                    TextureTrack = "themes/Black.png" Part(0, 499, 20, 20) Smooth;
-                    TextureTrackHover = "themes/Black.png" Part(22, 499, 20, 20) Smooth;
-                }
-            }
+        Renderer {
+            Texture = "loading.gif" Smooth;
+            TransparentTexture = true;
         }
     }
 }

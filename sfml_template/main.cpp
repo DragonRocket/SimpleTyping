@@ -18,6 +18,7 @@ GuiSFML gui{ window };
 
 float round2(float);
 void reset();
+void timeHide();
 void timeEnd();
 void resize();
 void process();
@@ -32,20 +33,27 @@ int main()
     gui.loadWidgetsFromFile("form.txt");
     gui.onViewChange(&resize);
 
+    tgui::Font font = tgui::Font("times new roman.ttf");
+    
     Panel::Ptr wordsbox = gui.get<Panel>("wordsbox");
     wordsbox->getRenderer()->setBorderColor(tgui::Color("#264d6e"));
-    
+    wordsbox->getRenderer()->setFont(font);
+
     Panel::Ptr metricPanel = gui.get<Panel>("metricPanel");
     metricPanel->getRenderer()->setBorderColor(tgui::Color("#264d6e"));
-
-    reset();
-
+    
     BitmapButton::Ptr refreshBtn = gui.get<BitmapButton>("refreshBtn");
     refreshBtn->onClick(&reset);
 
+    Label::Ptr timelabel = gui.get<Label>("time");
+    timelabel->onClick(&timeHide);
+    
     EditBox::Ptr typebox = gui.get<EditBox>("typebox");
     typebox->onTextChange(&process);
+    typebox->getRenderer()->setFont(font);
 
+    reset();
+    
     while (window.isOpen())
     {
         sf::Event event;
@@ -61,11 +69,10 @@ int main()
         {
             int time = timer->getNextScheduledTime()->asSeconds();
 
+            timelabel->setText(tgui::String(time));
+
             if (time != 0)
             {
-                Label::Ptr timelabel = gui.get<Label>("time");
-                timelabel->setText(tgui::String(time));
-
                 int speed = (charCount / 5.0) / ((60.0 - timer->getNextScheduledTime()->asSeconds()) / 60.0);
                 speed -= (errorCount / time);
 
@@ -98,13 +105,23 @@ float round2(float var)
 
 void timeEnd()
 {
-    Label::Ptr time = gui.get<Label>("time");
-    time->setText(tgui::String(60));
-
-    EditBox::Ptr typebox = gui.get<EditBox>("typebox");
-    typebox->setEnabled(false);
+    Panel::Ptr wordsbox = gui.get<Panel>("wordsbox");
+    wordsbox->removeAllWidgets();
 
     timer->setEnabled(false);
+}
+
+void timeHide()
+{
+    Label::Ptr time = gui.get<Label>("time");
+    if (time->getRenderer()->getTextColor() != tgui::Color::Transparent)
+    {
+        time->getRenderer()->setTextColor(tgui::Color::Transparent);
+    }
+    else
+    {
+        time->getRenderer()->setTextColor(tgui::Color::White);
+    }
 }
 
 void resize()
@@ -117,7 +134,7 @@ void resize()
     
     for (int i = 0; i < wordCount; i++)
     {
-        widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 50);
+        widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 60);
     }
     
     for (int i = wordCount; i < widgets.size(); i++)
@@ -126,7 +143,7 @@ void resize()
 
         if (left + x >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
         {
-            top += 50;
+            top += 60;
             left = 0;
         }
 
@@ -137,8 +154,21 @@ void resize()
 
 void reset()
 {
+    Picture::Ptr loadingPic = gui.get<Picture>("loading");
+    loadingPic->setVisible(true);
+
     Panel::Ptr wordsbox = gui.get<Panel>("wordsbox");
-    wordsbox->removeAllWidgets();
+    wordsbox->setVisible(false);
+
+    Panel::Ptr metricPanel = gui.get<Panel>("metricPanel");
+    metricPanel->setVisible(false);
+
+    Panel::Ptr inputPanel = gui.get<Panel>("inputPanel");
+    inputPanel->setVisible(false);
+
+    window.clear();
+    gui.draw();
+    window.display();
 
     ifstream fin("words.dat");
     if (fin)
@@ -156,10 +186,12 @@ void reset()
 
         int left = 0;
         int top = 0;
+
+        wordsbox->removeAllWidgets();
         for (int i = 0; i < words.size(); i++)
         {
             Label::Ptr word = Label::create(words[i]);
-            word->setTextSize(30);
+            word->setTextSize(38);
             word->getRenderer()->setTextColor(tgui::Color::White);
             wordsbox->add(word);
 
@@ -167,7 +199,7 @@ void reset()
 
             if (left + x >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
             {
-                top += 50;
+                top += 60;
                 left = 0;
             }
 
@@ -175,9 +207,17 @@ void reset()
 
             left += x + 2;
         }
-        wordsbox->getWidgets()[0]->cast<Label>()->getRenderer()->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::White, 0.25));
+        wordsbox->getWidgets()[0]->cast<Label>()->getRenderer()->setBackgroundColor(tgui::Color("#2b2f31"));
         fin.close();
     }
+
+    loadingPic->setVisible(false);
+    wordsbox->setVisible(true);
+    inputPanel->setVisible(true);
+    metricPanel->setVisible(true);
+
+    Label::Ptr timelabel = gui.get<Label>("time");
+    timelabel->setText(tgui::String(60));
 
     EditBox::Ptr typebox = gui.get<EditBox>("typebox");
     typebox->setText("");
@@ -188,10 +228,8 @@ void reset()
     charError = 0;
     wordCount = 0;
     errorCount = 0;
-    timer->setEnabled(false);
 
-    Label::Ptr timelabel = gui.get<Label>("time");
-    timelabel->setText(tgui::String(60));
+    timer->setEnabled(false);
 }
 
 void process()
@@ -208,37 +246,43 @@ void process()
     EditBox::Ptr typebox = gui.get<EditBox>("typebox");
     tgui::String text = typebox->getText();
 
-    Label::Ptr currLabel = widgets[wordCount]->cast<Label>();
-    LabelRenderer* currLabelRenderer = currLabel->getRenderer();
+    Label::Ptr currLabel = NULL;
+    LabelRenderer* currLabelRenderer = NULL;
     if (text[text.length() - 1] == ' ')
     {
-        if (text[0] != ' ')
+        if (widgets.size())
         {
-            Label::Ptr nextLabel = widgets[wordCount + 1]->cast<Label>();
-            LabelRenderer* nextLabelRenderer = nextLabel->getRenderer();
+            currLabel = widgets[wordCount]->cast<Label>();
+            currLabelRenderer = currLabel->getRenderer();
 
-            currLabelRenderer->setBackgroundColor(tgui::Color::Transparent);
-            nextLabelRenderer->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::White, 0.25));
-            if (text == currLabel->getText() + " ")
+            if (text[0] != ' ')
             {
-                currLabelRenderer->setTextColor(tgui::Color::Green);
-            }
-            else
-            {
-                currLabelRenderer->setTextColor(tgui::Color::Red);
-                errorCount++;
+                Label::Ptr nextLabel = widgets[wordCount + 1]->cast<Label>();
+                LabelRenderer* nextLabelRenderer = nextLabel->getRenderer();
 
-                Label::Ptr errorlabel = gui.get<Label>("errors");
-                errorlabel->setText(tgui::String(errorCount));
-            }
-
-            wordCount++;
-
-            if (nextLabel->getPosition().y > 0)
-            {
-                for (int i = 0; i < widgets.size(); i++)
+                currLabelRenderer->setBackgroundColor(tgui::Color::Transparent);
+                nextLabelRenderer->setBackgroundColor(tgui::Color("#2b2f31"));
+                if (text == currLabel->getText() + " ")
                 {
-                    widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 50);
+                    currLabelRenderer->setTextColor(tgui::Color::Green);
+                }
+                else
+                {
+                    currLabelRenderer->setTextColor(tgui::Color::Red);
+                    errorCount++;
+
+                    Label::Ptr errorlabel = gui.get<Label>("errors");
+                    errorlabel->setText(tgui::String(errorCount));
+                }
+
+                wordCount++;
+
+                if (nextLabel->getPosition().y > 0)
+                {
+                    for (int i = 0; i < widgets.size(); i++)
+                    {
+                        widgets[i]->setPosition(widgets[i]->getPosition().x, widgets[i]->getPosition().y - 60);
+                    }
                 }
             }
         }
@@ -246,15 +290,21 @@ void process()
     }
     else
     {
-        charCount++;
-        if (text == currLabel->getText().substr(0, text.size()))
+        if (widgets.size())
         {
-            currLabelRenderer->setTextColor(tgui::Color::White);
-        }
-        else
-        {
-            currLabelRenderer->setTextColor(tgui::Color::Red);
-            charError++;
+            currLabel = widgets[wordCount]->cast<Label>();
+            currLabelRenderer = currLabel->getRenderer();
+
+            charCount++;
+            if (text == currLabel->getText().substr(0, text.size()))
+            {
+                currLabelRenderer->setTextColor(tgui::Color::White);
+            }
+            else
+            {
+                currLabelRenderer->setTextColor(tgui::Color::Red);
+                charError++;
+            }
         }
     }
 }
