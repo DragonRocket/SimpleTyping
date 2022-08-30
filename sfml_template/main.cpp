@@ -13,7 +13,7 @@ int charError = 0;
 int wordCount = 0;
 int errorCount = 0;
 
-RenderWindow window(VideoMode(1280, 800), "Typing");
+RenderWindow window(VideoMode(1920, 1080), "Typing", sf::Style::Fullscreen);
 GuiSFML gui{ window };
 
 float round2(float);
@@ -62,7 +62,20 @@ int main()
             gui.handleEvent(event);
 
             if (event.type == sf::Event::Closed)
+            {
                 window.close();
+            }
+            else if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == Keyboard::Escape)
+                {
+                    window.close();
+                }
+                else if (event.key.code == Keyboard::F5)
+                {
+                    reset();
+                }
+            }
         }
 
         if (timer->getNextScheduledTime())
