@@ -38,6 +38,7 @@ Label::Ptr speedlabel;
 Picture::Ptr loadingPic;
 Panel::Ptr inputPanel;
 Label::Ptr errorlabel;
+Label::Ptr timepassed;
 
 float round2(float);
 void reset();
@@ -46,6 +47,7 @@ void timeEnd();
 void resize();
 void process();
 void speedMatricChange();
+float convertSpeed(float, string);
 int myrandom(int);
 
 Timer::Ptr timer = Timer::create(&timeEnd, 60000, false);
@@ -67,6 +69,7 @@ int main()
     loadingPic = gui.get<Picture>("loading");
     inputPanel = gui.get<Panel>("inputPanel");
     errorlabel = gui.get<Label>("errors");
+    timepassed = gui.get<Label>("timepassed");
 
     tgui::Font font = tgui::Font("times new roman.ttf");
     
@@ -123,6 +126,7 @@ int main()
             int time = timer->getNextScheduledTime()->asSeconds();
 
             timelabel->setText(tgui::String(time));
+            timepassed->setText(tgui::String(SECONDS - time) + tgui::String(" sec"));
 
             if (time != 0)
             {
@@ -130,31 +134,29 @@ int main()
 
                 if (speed_matric == "WPM")
                 {
-                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / float(SECONDS));
-                    errorlabel->setText(tgui::String(errorCount));
+                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / 60.0);
+                    errorlabel->setText(tgui::String(to_string(errorCount) + " Words"));
                 }
                 else if (speed_matric == "WPS")
                 {
                     speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / (float(SECONDS) - time);
-                    errorlabel->setText(tgui::String(errorCount));
+                    errorlabel->setText(tgui::String(to_string(errorCount) + " Words"));
                 }
                 else if (speed_matric == "CPM")
                 {
-                    speed = (charCount - charError) / ((float(SECONDS) - time) / float(SECONDS));
-                    errorlabel->setText(tgui::String(charError));
+                    speed = (charCount - charError) / ((float(SECONDS) - time) / 60.0);
+                    errorlabel->setText(tgui::String(to_string(charError) + " Characters"));
                 }
                 else if (speed_matric == "CPS")
                 {
                     speed = (charCount - charError) / (float(SECONDS) - time);
-                    errorlabel->setText(tgui::String(charError));
+                    errorlabel->setText(tgui::String(to_string(charError) + " Characters"));
                 }
                 else
                 {
-                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / float(SECONDS));
-                    errorlabel->setText(tgui::String(errorCount));
+                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / 60.0);
+                    errorlabel->setText(tgui::String(to_string(errorCount) + " Words"));
                 }
-
-                speed = round2(speed);
 
                 float accuracy = float(charCount - charError) * 100 / float(charCount);
 
@@ -183,9 +185,22 @@ float round2(float var)
 
 void timeEnd()
 {
+    timer->setEnabled(false);
+    loadingPic->setVisible(true);
+    wordsbox->setVisible(false);
+    metricPanel->setVisible(false);
+    inputPanel->setVisible(false);
+
+    window.clear();
+    gui.draw();
+    window.display();
+
     wordsbox->removeAllWidgets();
 
-    timer->setEnabled(false);
+    loadingPic->setVisible(false);
+    wordsbox->setVisible(true);
+    metricPanel->setVisible(true);
+    inputPanel->setVisible(true);    
 }
 
 void timeHide()
@@ -217,7 +232,7 @@ void resize()
     {
         int x = widgets[i]->getSize().x;
 
-        if (left + x + WORD_RIGHT_MARGIN >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
+        if (left + x + WORD_RIGHT_MARGIN + 1 >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
         {
             top += WORD_TOP_MARGIN;
             left = 0;
@@ -266,7 +281,7 @@ void reset()
 
             int x = word->getSize().x;
 
-            if (left + x + WORD_RIGHT_MARGIN >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
+            if (left + x + WORD_RIGHT_MARGIN + 1 >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
             {
                 top += WORD_TOP_MARGIN;
                 left = 0;
@@ -301,29 +316,33 @@ void reset()
 
 void speedMatricChange()
 {
-    string prev_speed_label = speed_matric;
+    float new_speed = 0;
+    float old_speed = 0;
+    
+    old_speed = atof(speedlabel->getText().substr(0, speedlabel->getText().find_last_of(" ")).toStdString().c_str());
 
     if (speed_matric == "WPM")
     {
         speed_matric = "WPS";
+        new_speed = old_speed / 60.0;
     }
     else if (speed_matric == "WPS")
     {
         speed_matric = "CPM";
+        new_speed = old_speed * 60.0 / AVERAGE_WORD_LENGTH;
     }
     else if (speed_matric == "CPM")
     {
         speed_matric = "CPS";
+        new_speed = old_speed / 60.0;
     }
     else if (speed_matric == "CPS")
     {
         speed_matric = "WPM";
+        new_speed = old_speed * AVERAGE_WORD_LENGTH / 60.0;
     }
 
-    if (speedlabel->getText() == "0 " + prev_speed_label)
-    {
-        speedlabel->setText("0 " + speed_matric);
-    }
+    speedlabel->setText(to_string(new_speed) + " " + speed_matric);
 
     typebox->setFocused(true);
 }

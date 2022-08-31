@@ -149,7 +149,7 @@ Panel.mainPanel {
 
     Panel.metricPanel {
         Position = (5%, 270);
-        Size = (280, 210);
+        Size = (340, 210);
 
         Renderer {
             BackgroundColor = #131516;
@@ -159,9 +159,9 @@ Panel.mainPanel {
         }
 
         Group.Group1 {
-            Position = (10, 70);
+            Position = (10, 60);
             Renderer = &1;
-            Size = (250, 30);
+            Size = (320, 30);
 
             Label.speedlabel {
                 AutoSize = true;
@@ -174,7 +174,7 @@ Panel.mainPanel {
             Label.speed {
                 Position = (90, 0);
                 Renderer = &2;
-                Size = (132.8, 29);
+                Size = (212, 29);
                 Text = "0 WPM";
                 TextSize = 20;
                 VerticalAlignment = Center;
@@ -182,9 +182,9 @@ Panel.mainPanel {
         }
 
         Group.Group2 {
-            Position = (10, 120);
+            Position = (10, 100);
             Renderer = &1;
-            Size = (250, 30);
+            Size = (320, 30);
 
             Label.errorlabel {
                 AutoSize = true;
@@ -198,17 +198,17 @@ Panel.mainPanel {
             Label.errors {
                 Position = (90, -4.5);
                 Renderer = &2;
-                Size = (47.8, 29);
-                Text = 0;
+                Size = (207.8, 29);
+                Text = "0 Words";
                 TextSize = 20;
                 VerticalAlignment = Center;
             }
         }
 
         Group.Group3 {
-            Position = (10, 160);
+            Position = (10, 135);
             Renderer = &1;
-            Size = (250, 30);
+            Size = (320, 30);
 
             Label.accuracylabel {
                 AutoSize = true;
@@ -222,7 +222,7 @@ Panel.mainPanel {
             Label.accuracy {
                 Position = (116.1, -4.5);
                 Renderer = &2;
-                Size = (87.8, 29);
+                Size = (177.8, 29);
                 Text = "0 %";
                 TextSize = 20;
                 VerticalAlignment = Center;
@@ -231,12 +231,36 @@ Panel.mainPanel {
 
         Label.metriclabel {
             HorizontalAlignment = Center;
-            Position = (10, 10);
+            Position = (50% - 114, 10);
             Renderer = &2;
-            Size = (227.2, 38);
+            Size = (228, 38);
             Text = Metrics;
             TextSize = 24;
             VerticalAlignment = Center;
+        }
+
+        Group.Group4 {
+            Position = (10, 170);
+            Renderer = &1;
+            Size = (320, 30);
+
+            Label.timelabel {
+                AutoSize = true;
+                Position = (0, -4.5);
+                Renderer = &2;
+                Size = (74.2, 29);
+                Text = "Time: ";
+                TextSize = 22;
+            }
+
+            Label.timepassed {
+                Position = (76.1, -4.5);
+                Renderer = &2;
+                Size = (177.8, 29);
+                Text = "0 sec";
+                TextSize = 20;
+                VerticalAlignment = Center;
+            }
         }
     }
 
