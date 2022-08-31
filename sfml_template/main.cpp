@@ -15,6 +15,8 @@ using namespace tgui;
 #define SECONDS 60
 #define AVERAGE_WORD_LENGTH 5
 
+string speed_matric = "WPM";
+
 int charCount = 0;
 int charError = 0;
 int wordCount = 0;
@@ -43,6 +45,7 @@ void timeHide();
 void timeEnd();
 void resize();
 void process();
+void speedMatricChange();
 int myrandom(int);
 
 Timer::Ptr timer = Timer::create(&timeEnd, 60000, false);
@@ -76,6 +79,8 @@ int main()
 
     timelabel->onClick(&timeHide);
     
+    speedlabel->onClick(&speedMatricChange);
+
     typebox->onTextChange(&process);
     typebox->getRenderer()->setFont(font);
 
@@ -113,15 +118,37 @@ int main()
 
             if (time != 0)
             {
-                int speed = (charCount / AVERAGE_WORD_LENGTH) / ((float(SECONDS) - timer->getNextScheduledTime()->asSeconds()) / float(SECONDS));
-                speed -= (errorCount / time);
+                float speed = 0;
+
+                if (speed_matric == "WPM")
+                {
+                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / float(SECONDS));
+                }
+                else if (speed_matric == "WPS")
+                {
+                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / (float(SECONDS) - time);
+                }
+                else if (speed_matric == "CPM")
+                {
+                    speed = (charCount - charError) / ((float(SECONDS) - time) / float(SECONDS));
+                }
+                else if (speed_matric == "CPS")
+                {
+                    speed = (charCount - charError) / (float(SECONDS) - time);
+                }
+                else
+                {
+                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / float(SECONDS));
+                }
+
+                speed = round2(speed);
 
                 float accuracy = float(charCount - charError) * 100 / float(charCount);
 
                 accuracy = round2(accuracy);
                 accuracylabel->setText(tgui::String(accuracy) + " %");
 
-                speedlabel->setText(tgui::String(speed) + " WPM");
+                speedlabel->setText(tgui::String(speed) + " " + speed_matric);
             }
         }
 
@@ -158,6 +185,8 @@ void timeHide()
     {
         timelabel->getRenderer()->setTextColor(tgui::Color::White);
     }
+
+    typebox->setFocused(true);
 }
 
 void resize()
@@ -257,6 +286,35 @@ void reset()
     timer->setEnabled(false);
 }
 
+void speedMatricChange()
+{
+    string prev_speed_label = speed_matric;
+
+    if (speed_matric == "WPM")
+    {
+        speed_matric = "WPS";
+    }
+    else if (speed_matric == "WPS")
+    {
+        speed_matric = "CPM";
+    }
+    else if (speed_matric == "CPM")
+    {
+        speed_matric = "CPS";
+    }
+    else if (speed_matric == "CPS")
+    {
+        speed_matric = "WPM";
+    }
+
+    if (speedlabel->getText() == "0 " + prev_speed_label)
+    {
+        speedlabel->setText("0 " + speed_matric);
+    }
+
+    typebox->setFocused(true);
+}
+
 void process()
 {
     if (charCount == 0)
@@ -294,7 +352,18 @@ void process()
                     currLabelRenderer->setTextColor(tgui::Color::Red);
                     errorCount++;
 
-                    errorlabel->setText(tgui::String(errorCount));
+                    if (speed_matric == "WPM" or speed_matric == "WPS")
+                    {
+                        errorlabel->setText(tgui::String(errorCount));
+                    }
+                    else if (speed_matric == "CPM" or speed_matric == "CPS")
+                    {
+                        errorlabel->setText(tgui::String(charError));
+                    }
+                    else
+                    {
+                        errorlabel->setText(tgui::String(errorCount));
+                    }
                 }
 
                 wordCount++;

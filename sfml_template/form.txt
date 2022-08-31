@@ -149,7 +149,7 @@ Panel.mainPanel {
 
     Panel.metricPanel {
         Position = (5%, 270);
-        Size = (270, 210);
+        Size = (280, 210);
 
         Renderer {
             BackgroundColor = #131516;
@@ -161,7 +161,7 @@ Panel.mainPanel {
         Group.Group1 {
             Position = (10, 70);
             Renderer = &1;
-            Size = (230, 30);
+            Size = (250, 30);
 
             Label.speedlabel {
                 AutoSize = true;
@@ -174,7 +174,7 @@ Panel.mainPanel {
             Label.speed {
                 Position = (90, 0);
                 Renderer = &2;
-                Size = (102.8, 29);
+                Size = (132.8, 29);
                 Text = "0 WPM";
                 TextSize = 20;
                 VerticalAlignment = Center;
@@ -184,7 +184,7 @@ Panel.mainPanel {
         Group.Group2 {
             Position = (10, 120);
             Renderer = &1;
-            Size = (230, 30);
+            Size = (250, 30);
 
             Label.errorlabel {
                 AutoSize = true;
@@ -208,7 +208,7 @@ Panel.mainPanel {
         Group.Group3 {
             Position = (10, 160);
             Renderer = &1;
-            Size = (230, 30);
+            Size = (250, 30);
 
             Label.accuracylabel {
                 AutoSize = true;
