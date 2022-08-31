@@ -17,6 +17,18 @@ Renderer.2 {
     }
 }
 
+Renderer.3 {
+    TextColor = rgb(100, 100, 100);
+    TextureBackground = None;
+
+    Scrollbar {
+        TextureArrowDown = "themes/BabyBlue.png" Part(20, 2, 16, 16) Smooth;
+        TextureArrowUp = "themes/BabyBlue.png" Part(2, 2, 16, 16) Smooth;
+        TextureThumb = "themes/BabyBlue.png" Part(414, 2, 16, 32) Smooth;
+        TextureTrack = "themes/BabyBlue.png" Part(432, 2, 16, 32) Smooth;
+    }
+}
+
 Panel.mainPanel {
     Size = (100%, 100%);
 
@@ -136,8 +148,8 @@ Panel.mainPanel {
     }
 
     Panel.metricPanel {
-        Position = (5%, 290);
-        Size = (250, 210);
+        Position = (5%, 270);
+        Size = (270, 210);
 
         Renderer {
             BackgroundColor = #131516;
@@ -236,6 +248,44 @@ Panel.mainPanel {
         Renderer {
             Texture = "loading.gif" Smooth;
             TransparentTexture = true;
+        }
+    }
+
+    Panel.Panel1 {
+        Position = (50% - 100, (100% - 60) - 30);
+        Size = (200, 60);
+
+        Renderer {
+            BackgroundColor = #131516;
+            BorderColor = black;
+            Borders = (1, 1, 1, 1);
+            Padding = (5, 5, 5, 5);
+            TextureBackground = None;
+        }
+
+        Label.Label1 {
+            Position = (50% - 37, 0);
+            Renderer = &3;
+            Size = (74, 19);
+            Text = Shortcuts;
+            TextSize = 14;
+        }
+
+        Label.Label2 {
+            AutoSize = true;
+            Position = (0, 30);
+            Renderer = &3;
+            Size = (72, 17);
+            Text = "Refresh: F5";
+            TextSize = 12;
+        }
+
+        Label.Label3 {
+            Position = (100% - 54, 30);
+            Renderer = &3;
+            Size = (54, 17);
+            Text = "Exit: Esc";
+            TextSize = 12;
         }
     }
 }

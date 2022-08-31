@@ -23,7 +23,7 @@ int errorCount = 0;
 int resX = VideoMode::getDesktopMode().width;
 int resY = VideoMode::getDesktopMode().height;
 
-RenderWindow window(VideoMode(resX, resY), "Typing");
+RenderWindow window(VideoMode(resX, resY), "Typing", Style::Fullscreen);
 GuiSFML gui{ window };
 
 Panel::Ptr wordsbox;
@@ -64,7 +64,6 @@ int main()
     loadingPic = gui.get<Picture>("loading");
     inputPanel = gui.get<Panel>("inputPanel");
     errorlabel = gui.get<Label>("errors");
-
 
     tgui::Font font = tgui::Font("times new roman.ttf");
     
@@ -176,7 +175,7 @@ void resize()
     {
         int x = widgets[i]->getSize().x;
 
-        if (left + x + WORD_RIGHT_MARGIN > wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
+        if (left + x + WORD_RIGHT_MARGIN >= wordsbox->getSize().x - wordsbox->getRenderer()->getPadding().getRight())
         {
             top += WORD_TOP_MARGIN;
             left = 0;
