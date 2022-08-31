@@ -252,8 +252,8 @@ Panel.mainPanel {
     }
 
     Panel.Panel1 {
-        Position = (50% - 100, (100% - 60) - 30);
-        Size = (200, 60);
+        Position = (50% - 220, (100% - 60) - 30);
+        Size = (440, 60);
 
         Renderer {
             BackgroundColor = #131516;
@@ -273,7 +273,7 @@ Panel.mainPanel {
 
         Label.Label2 {
             AutoSize = true;
-            Position = (0, 30);
+            Position = (160, 30);
             Renderer = &3;
             Size = (72, 17);
             Text = "Refresh: F5";
@@ -281,10 +281,28 @@ Panel.mainPanel {
         }
 
         Label.Label3 {
-            Position = (100% - 54, 30);
+            Position = (370, 30);
             Renderer = &3;
             Size = (54, 17);
             Text = "Exit: Esc";
+            TextSize = 12;
+        }
+
+        Label.Label4 {
+            AutoSize = true;
+            Position = (0, 30);
+            Renderer = &3;
+            Size = (142, 17);
+            Text = "Change Speed Unit: F2";
+            TextSize = 12;
+        }
+
+        Label.Label5 {
+            AutoSize = true;
+            Position = (250, 30);
+            Renderer = &3;
+            Size = (100, 17);
+            Text = "Toggle Time: F8";
             TextSize = 12;
         }
     }

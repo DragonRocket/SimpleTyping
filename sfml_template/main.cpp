@@ -107,6 +107,14 @@ int main()
                 {
                     reset();
                 }
+                else if (event.key.code == Keyboard::F8)
+                {
+                    timeHide();
+                }
+                else if (event.key.code == Keyboard::F2)
+                {
+                    speedMatricChange();
+                }
             }
         }
 
@@ -123,22 +131,27 @@ int main()
                 if (speed_matric == "WPM")
                 {
                     speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / float(SECONDS));
+                    errorlabel->setText(tgui::String(errorCount));
                 }
                 else if (speed_matric == "WPS")
                 {
                     speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / (float(SECONDS) - time);
+                    errorlabel->setText(tgui::String(errorCount));
                 }
                 else if (speed_matric == "CPM")
                 {
                     speed = (charCount - charError) / ((float(SECONDS) - time) / float(SECONDS));
+                    errorlabel->setText(tgui::String(charError));
                 }
                 else if (speed_matric == "CPS")
                 {
                     speed = (charCount - charError) / (float(SECONDS) - time);
+                    errorlabel->setText(tgui::String(charError));
                 }
                 else
                 {
                     speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / float(SECONDS));
+                    errorlabel->setText(tgui::String(errorCount));
                 }
 
                 speed = round2(speed);
@@ -351,19 +364,6 @@ void process()
                 {
                     currLabelRenderer->setTextColor(tgui::Color::Red);
                     errorCount++;
-
-                    if (speed_matric == "WPM" or speed_matric == "WPS")
-                    {
-                        errorlabel->setText(tgui::String(errorCount));
-                    }
-                    else if (speed_matric == "CPM" or speed_matric == "CPS")
-                    {
-                        errorlabel->setText(tgui::String(charError));
-                    }
-                    else
-                    {
-                        errorlabel->setText(tgui::String(errorCount));
-                    }
                 }
 
                 wordCount++;
