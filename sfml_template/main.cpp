@@ -325,21 +325,29 @@ void speedMatricChange()
     {
         speed_matric = "WPS";
         new_speed = old_speed / 60.0;
+
+        errorlabel->setText(tgui::String(to_string(errorCount) + " Words"));
     }
     else if (speed_matric == "WPS")
     {
         speed_matric = "CPM";
-        new_speed = old_speed * 60.0 / AVERAGE_WORD_LENGTH;
+        new_speed = old_speed * AVERAGE_WORD_LENGTH * 60.0;
+
+        errorlabel->setText(tgui::String(to_string(charError) + " Characters"));
     }
     else if (speed_matric == "CPM")
     {
         speed_matric = "CPS";
         new_speed = old_speed / 60.0;
+
+        errorlabel->setText(tgui::String(to_string(charError) + " Characters"));
     }
     else if (speed_matric == "CPS")
     {
         speed_matric = "WPM";
-        new_speed = old_speed * AVERAGE_WORD_LENGTH / 60.0;
+        new_speed = old_speed * 60.0 / AVERAGE_WORD_LENGTH;
+
+        errorlabel->setText(tgui::String(to_string(errorCount) + " Words"));
     }
 
     speedlabel->setText(to_string(new_speed) + " " + speed_matric);
