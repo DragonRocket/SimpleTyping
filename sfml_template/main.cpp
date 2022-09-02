@@ -47,7 +47,6 @@ void timeEnd();
 void resize();
 void process();
 void speedMatricChange();
-float convertSpeed(float, string);
 int myrandom(int);
 
 Timer::Ptr timer = Timer::create(&timeEnd, 60000, false);
@@ -56,6 +55,10 @@ int main()
 {
     srand(time(NULL));
     
+    sf::Image icon;
+    icon.loadFromFile("icon.png");
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
     gui.loadWidgetsFromFile("form.txt");
     gui.onViewChange(&resize);
 
@@ -79,9 +82,7 @@ int main()
     metricPanel->getRenderer()->setBorderColor(tgui::Color("#264d6e"));
     
     refreshBtn->onClick(&reset);
-
     timelabel->onClick(&timeHide);
-    
     speedlabel->onClick(&speedMatricChange);
 
     typebox->onTextChange(&process);
