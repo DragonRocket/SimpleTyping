@@ -135,12 +135,12 @@ int main()
 
                 if (speed_matric == "WPM")
                 {
-                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / ((float(SECONDS) - time) / 60.0);
+                    speed = ((charCount - charError) / AVERAGE_WORD_LENGTH) / ((float(SECONDS) - time) / 60.0);
                     errorlabel->setText(tgui::String(to_string(errorCount) + " Words"));
                 }
                 else if (speed_matric == "WPS")
                 {
-                    speed = ((charCount / AVERAGE_WORD_LENGTH) - errorCount) / (float(SECONDS) - time);
+                    speed = ((charCount - charError) / AVERAGE_WORD_LENGTH) / (float(SECONDS) - time);
                     errorlabel->setText(tgui::String(to_string(errorCount) + " Words"));
                 }
                 else if (speed_matric == "CPM")
